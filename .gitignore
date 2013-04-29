@@ -168,3 +168,6 @@ pip-log.txt
 
 # User configs (build environment, etc)
 .pro.user
+
+# File autosave
+.autosave
