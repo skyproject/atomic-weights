@@ -14,30 +14,31 @@
 #include "softwareupdate.h"
 #include "data.h"
 
-namespace Ui {
-class MainWindow;
+namespace Ui
+{
+    class MainWindow;
 }
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
-    
-public:
-    explicit MainWindow(QWidget *parent = 0, bool checkUpdates = false);
-    ~MainWindow();
+        Q_OBJECT
 
-private slots:
-    void showAbout();
-    void resultsClosed();
-    void updateCheckFinished();
-    void startNewCalculation();
-    void calculationFinished(Data::CalculationInfo info);
-    void initializeCalculation(Data::UserInput userInputData);
+    public:
+        explicit MainWindow ( QWidget *parent = 0, bool checkUpdates = false );
+        ~MainWindow();
 
-private:
-    void clearLayout();
-    Ui::MainWindow *ui;
-    SUL::SoftwareUpdate *su;
+    private slots:
+        void showAbout();
+        void resultsClosed();
+        void updateCheckFinished();
+        void startNewCalculation();
+        void calculationFinished ( Data::CalculationInfo info );
+        void initializeCalculation ( Data::UserInput userInputData );
+
+    private:
+        void clearLayout();
+        Ui::MainWindow *ui;
+        SUL::SoftwareUpdate *su;
 };
 
 #endif // MAINWINDOW_H

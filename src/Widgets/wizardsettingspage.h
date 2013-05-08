@@ -13,23 +13,24 @@
 
 #include "data.h"
 
-namespace Ui {
-class WizardSettingsPage;
+namespace Ui
+{
+    class WizardSettingsPage;
 }
 
 class WizardSettingsPage : public QWidget
 {
-    Q_OBJECT
-    
-public:
-    explicit WizardSettingsPage(QWidget *parent = 0);
-    ~WizardSettingsPage();
-    int getMaximumValue();
-    int getIpComparison();
-    Data::Logarithm getLogarithmicBase();
-    
-private:
-    Ui::WizardSettingsPage *ui;
+        Q_OBJECT
+
+    public:
+        explicit WizardSettingsPage ( QWidget *parent = 0 );
+        ~WizardSettingsPage();
+        int getMaximumValue();
+        int getIpComparison();
+        Data::Logarithm getLogarithmicBase();
+
+    private:
+        Ui::WizardSettingsPage *ui;
 };
 
 #endif // WIZARDSETTINGSPAGE_H

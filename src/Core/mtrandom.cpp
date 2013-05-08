@@ -12,15 +12,15 @@
 
 MTRandom::MTRandom()
 {
-    mtwister_engine.seed((unsigned)time(NULL));
+    mtwister_engine.seed ( ( unsigned ) time ( NULL ) );
 }
 
-int MTRandom::getRandomInt(int minValue, int maxValue)
+int MTRandom::getRandomInt ( int minValue, int maxValue )
 {
-    int number = (int)mtwister_engine();
-    if (minValue != maxValue)
+    int number = ( int ) mtwister_engine();
+    if ( minValue != maxValue )
     {
-        return (std::abs(number % (maxValue - minValue)) + minValue);
+        return ( std::abs ( number % ( maxValue - minValue ) ) + minValue );
     }
     else
     {

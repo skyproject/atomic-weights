@@ -62,11 +62,11 @@ RESOURCES += \
 win32:RC_FILE = resources.rc
 
 
-# ------ d:/l is a path to folder with software-update library
+# ------ d:/l/sul is a path to folder with software-update library
 
-LIBS += -Ld:/l -lsoftware-update
+LIBS += -Ld:/l/sul -lsoftware-update
 
-# ------ d:/l/includes/ is a path to folder with software-update library header files
+# ------ d:/l/sul/includes/ is a path to folder with software-update library header files
 
-INCLUDEPATH += d:/l/includes/
+INCLUDEPATH += d:/l/sul/includes/
 

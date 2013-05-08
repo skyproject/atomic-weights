@@ -15,31 +15,32 @@
 #include "Widgets/wizardipsearchpage.h"
 #include "data.h"
 
-namespace Ui {
-class CalculationWizard;
+namespace Ui
+{
+    class CalculationWizard;
 }
 
 class CalculationWizard : public QWidget
 {
-    Q_OBJECT
-    
-public:
-    explicit CalculationWizard(QWidget *parent = 0);
-    ~CalculationWizard();
-    
-private slots:
-    void stepNext();
-    void stepBack();
+        Q_OBJECT
 
-signals:
-    void userInputCompleted(Data::UserInput userInputData);
+    public:
+        explicit CalculationWizard ( QWidget *parent = 0 );
+        ~CalculationWizard();
 
-private:
-    Ui::CalculationWizard *ui;
-    WizardSettingsPage *wsp;
-    WizardIpSearchPage *wisp;
-    void switchPage();
-    short currentPage = 0;
+    private slots:
+        void stepNext();
+        void stepBack();
+
+    signals:
+        void userInputCompleted ( Data::UserInput userInputData );
+
+    private:
+        Ui::CalculationWizard *ui;
+        WizardSettingsPage *wsp;
+        WizardIpSearchPage *wisp;
+        void switchPage();
+        short currentPage = 0;
 };
 
 #endif // CALCULATIONWIZARD_H

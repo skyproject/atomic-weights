@@ -9,13 +9,13 @@
 #include "Widgets\welcomeinfo.h"
 #include "ui_welcomeinfo.h"
 
-WelcomeInfo::WelcomeInfo(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::WelcomeInfo)
+WelcomeInfo::WelcomeInfo ( QWidget *parent ) :
+    QWidget ( parent ),
+    ui ( new Ui::WelcomeInfo )
 {
-    ui->setupUi(this);
-    connect(ui->buttonStart, SIGNAL(clicked()),
-            this, SLOT(startCalculation()));
+    ui->setupUi ( this );
+    connect ( ui->buttonStart, SIGNAL ( clicked() ),
+              this, SLOT ( startCalculation() ) );
 }
 
 WelcomeInfo::~WelcomeInfo()

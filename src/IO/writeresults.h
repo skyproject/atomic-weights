@@ -15,18 +15,18 @@
 
 class WriteResults : public QObject
 {
-    Q_OBJECT
+        Q_OBJECT
 
-public:
-    WriteResults(Data::UserInput userInputData);
-    void saveResult(Data::CalculationResult result);
+    public:
+        WriteResults ( Data::UserInput userInputData );
+        void saveResult ( Data::CalculationResult result );
 
-signals:
-    void resultSaved();
+    signals:
+        void resultSaved();
 
-private:
-    void writeInitialDataToFile(Data::UserInput userInputData);
-    QString resultsFile;
+    private:
+        void writeInitialDataToFile ( Data::UserInput userInputData );
+        QString resultsFile;
 };
 
 #endif // WRITERESULTS_H

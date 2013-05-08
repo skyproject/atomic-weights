@@ -11,23 +11,24 @@
 
 #include <QDialog>
 
-namespace Ui {
-class AboutWindow;
+namespace Ui
+{
+    class AboutWindow;
 }
 
 class AboutWindow : public QDialog
 {
-    Q_OBJECT
-    
-public:
-    explicit AboutWindow(QWidget *parent = 0);
-    ~AboutWindow();
-    
-private slots:
-    void close();
+        Q_OBJECT
 
-private:
-    Ui::AboutWindow *ui;
+    public:
+        explicit AboutWindow ( QWidget *parent = 0 );
+        ~AboutWindow();
+
+    private slots:
+        void close();
+
+    private:
+        Ui::AboutWindow *ui;
 };
 
 #endif // ABOUTWINDOW_H

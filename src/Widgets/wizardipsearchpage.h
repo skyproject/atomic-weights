@@ -11,25 +11,26 @@
 
 #include <QWidget>
 
-namespace Ui {
-class WizardIpSearchPage;
+namespace Ui
+{
+    class WizardIpSearchPage;
 }
 
 class WizardIpSearchPage : public QWidget
 {
-    Q_OBJECT
-    
-public:
-    explicit WizardIpSearchPage(QWidget *parent = 0);
-    ~WizardIpSearchPage();
-    bool getExtendedIpSearch();
-    std::vector<double> getIpSearch();
-    
-private slots:
-    void ipCheckStateChanged(int newState);
+        Q_OBJECT
 
-private:
-    Ui::WizardIpSearchPage *ui;
+    public:
+        explicit WizardIpSearchPage ( QWidget *parent = 0 );
+        ~WizardIpSearchPage();
+        bool getExtendedIpSearch();
+        std::vector<double> getIpSearch();
+
+    private slots:
+        void ipCheckStateChanged ( int newState );
+
+    private:
+        Ui::WizardIpSearchPage *ui;
 };
 
 #endif // WIZARDIPSEARCHPAGE_H

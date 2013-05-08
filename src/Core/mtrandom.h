@@ -13,12 +13,12 @@
 
 class MTRandom
 {
-public:
-    MTRandom();
-    int getRandomInt(int minValue, int maxValue);
+    public:
+        MTRandom();
+        int getRandomInt ( int minValue, int maxValue );
 
-private:
-    std::mt19937 mtwister_engine;
+    private:
+        std::mt19937 mtwister_engine;
 };
 
 #endif // MTRANDOM_H

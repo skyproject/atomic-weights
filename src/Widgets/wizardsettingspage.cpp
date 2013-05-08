@@ -11,11 +11,11 @@
 #include "Widgets/wizardsettingspage.h"
 #include "ui_wizardsettingspage.h"
 
-WizardSettingsPage::WizardSettingsPage(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::WizardSettingsPage)
+WizardSettingsPage::WizardSettingsPage ( QWidget *parent ) :
+    QWidget ( parent ),
+    ui ( new Ui::WizardSettingsPage )
 {
-    ui->setupUi(this);
+    ui->setupUi ( this );
 }
 
 WizardSettingsPage::~WizardSettingsPage()
@@ -35,7 +35,7 @@ int WizardSettingsPage::getIpComparison()
 
 Data::Logarithm WizardSettingsPage::getLogarithmicBase()
 {
-    if (ui->boxLogarithm->currentText() == "Natural")
+    if ( ui->boxLogarithm->currentText() == "Natural" )
     {
         return Data::Logarithm::natural;
     }

@@ -11,26 +11,27 @@
 
 #include <QWidget>
 
-namespace Ui {
-class WelcomeInfo;
+namespace Ui
+{
+    class WelcomeInfo;
 }
 
 class WelcomeInfo : public QWidget
 {
-    Q_OBJECT
-    
-public:
-    explicit WelcomeInfo(QWidget *parent = 0);
-    ~WelcomeInfo();
-    
-private slots:
-    void startCalculation();
+        Q_OBJECT
 
-signals:
-    void showCalculationWizard();
+    public:
+        explicit WelcomeInfo ( QWidget *parent = 0 );
+        ~WelcomeInfo();
 
-private:
-    Ui::WelcomeInfo *ui;
+    private slots:
+        void startCalculation();
+
+    signals:
+        void showCalculationWizard();
+
+    private:
+        Ui::WelcomeInfo *ui;
 };
 
 #endif // WELCOMEINFO_H

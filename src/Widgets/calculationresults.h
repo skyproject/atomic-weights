@@ -13,27 +13,28 @@
 
 #include "data.h"
 
-namespace Ui {
-class CalculationResults;
+namespace Ui
+{
+    class CalculationResults;
 }
 
 class CalculationResults : public QWidget
 {
-    Q_OBJECT
-    
-public:
-    explicit CalculationResults(Data::CalculationInfo calculation, QWidget *parent = 0);
-    ~CalculationResults();
-    
-private slots:
-    void openResultsFile();
-    void closeResultsInfo();
+        Q_OBJECT
 
-signals:
-    void resultsClosed();
+    public:
+        explicit CalculationResults ( Data::CalculationInfo calculation, QWidget *parent = 0 );
+        ~CalculationResults();
 
-private:
-    Ui::CalculationResults *ui;
+    private slots:
+        void openResultsFile();
+        void closeResultsInfo();
+
+    signals:
+        void resultsClosed();
+
+    private:
+        Ui::CalculationResults *ui;
 };
 
 #endif // CALCULATIONRESULTS_H

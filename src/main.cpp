@@ -12,20 +12,20 @@
 
 #include "Windows\mainwindow.h"
 
-int main(int argc, char *argv[])
+int main ( int argc, char *argv[] )
 {
-    QApplication a(argc, argv);
+    QApplication a ( argc, argv );
 
-    QApplication::setQuitOnLastWindowClosed(true);
+    QApplication::setQuitOnLastWindowClosed ( true );
 
-    QFontDatabase::addApplicationFont("/OpenSans-Bold.ttf");
-    QFontDatabase::addApplicationFont("/OpenSans-Regular.ttf");
+    QFontDatabase::addApplicationFont ( "OpenSans-Bold.ttf" );
+    QFontDatabase::addApplicationFont ( "OpenSans-Regular.ttf" );
 
-    qRegisterMetaType<Data::UserInput>("Data::UserInput");
-    qRegisterMetaType<Data::CalculationInfo>("Data::CalculationInfo");
-    qRegisterMetaType<Data::CalculationResult>("Data::CalculationResult");
+    qRegisterMetaType<Data::UserInput> ( "Data::UserInput" );
+    qRegisterMetaType<Data::CalculationInfo> ( "Data::CalculationInfo" );
+    qRegisterMetaType<Data::CalculationResult> ( "Data::CalculationResult" );
 
-    MainWindow *w = new MainWindow(NULL, true);
+    MainWindow *w = new MainWindow ( NULL, true );
 
     return a.exec();
 }

@@ -13,19 +13,19 @@
 #include "Widgets/calculationwizard.h"
 #include "ui_calculationwizard.h"
 
-CalculationWizard::CalculationWizard(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::CalculationWizard)
+CalculationWizard::CalculationWizard ( QWidget *parent ) :
+    QWidget ( parent ),
+    ui ( new Ui::CalculationWizard )
 {
-    ui->setupUi(this);
+    ui->setupUi ( this );
     wsp = new WizardSettingsPage();
-    ui->pageLayout->addWidget(wsp);
+    ui->pageLayout->addWidget ( wsp );
     wisp = new WizardIpSearchPage();
-    ui->pageLayout->addWidget(wisp);
-    connect(ui->buttonNext, SIGNAL(clicked()),
-            this, SLOT(stepNext()));
-    connect(ui->buttonBack, SIGNAL(clicked()),
-            this, SLOT(stepBack()));
+    ui->pageLayout->addWidget ( wisp );
+    connect ( ui->buttonNext, SIGNAL ( clicked() ),
+              this, SLOT ( stepNext() ) );
+    connect ( ui->buttonBack, SIGNAL ( clicked() ),
+              this, SLOT ( stepBack() ) );
     switchPage();
 }
 
@@ -38,27 +38,27 @@ CalculationWizard::~CalculationWizard()
 
 void CalculationWizard::stepNext()
 {
-    if (currentPage < 1)
+    if ( currentPage < 1 )
     {
         currentPage++;
         switchPage();
     }
     else
     {
-        QFileDialog *fd = new QFileDialog(this, tr("Select file for saving calculation results"));
-        fd->setDefaultSuffix(".txt");
-        fd->setNameFilter("Text Documents (*.txt)");
-        fd->setAcceptMode(QFileDialog::AcceptSave);
-        if(fd->exec() == true)
+        QFileDialog *fd = new QFileDialog ( this, tr ( "Select file for saving calculation results" ) );
+        fd->setDefaultSuffix ( ".txt" );
+        fd->setNameFilter ( "Text Documents (*.txt)" );
+        fd->setAcceptMode ( QFileDialog::AcceptSave );
+        if ( fd->exec() == true )
         {
             Data::UserInput input;
-            input.resultsFilePath = fd->selectedFiles().at(0);
+            input.resultsFilePath = fd->selectedFiles().at ( 0 );
             input.maximumValue = this->wsp->getMaximumValue();
             input.ipComparison = this->wsp->getIpComparison();
             input.extendedIpSearch = this->wisp->getExtendedIpSearch();
             input.log = this->wsp->getLogarithmicBase();
             input.search = this->wisp->getIpSearch();
-            emit userInputCompleted(input);
+            emit userInputCompleted ( input );
         }
     }
 }
@@ -71,20 +71,20 @@ void CalculationWizard::stepBack()
 
 void CalculationWizard::switchPage()
 {
-    switch (currentPage)
+    switch ( currentPage )
     {
         case 0:
         {
-            wsp->setVisible(true);
-            wisp->setVisible(false);
-            ui->buttonBack->setVisible(false);
+            wsp->setVisible ( true );
+            wisp->setVisible ( false );
+            ui->buttonBack->setVisible ( false );
             break;
         }
         case 1:
         {
-            wsp->setVisible(false);
-            wisp->setVisible(true);
-            ui->buttonBack->setVisible(true);
+            wsp->setVisible ( false );
+            wisp->setVisible ( true );
+            ui->buttonBack->setVisible ( true );
             break;
         }
     }

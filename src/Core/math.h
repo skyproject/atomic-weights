@@ -13,9 +13,9 @@
 
 class Math
 {
-public:
-     static double ip(std::vector<int> input, Data::Logarithm log);
-     static double roundDouble(double source, short decimals);
+    public:
+        static double ip ( std::vector<int> input, Data::Logarithm log );
+        static double roundDouble ( double source, short decimals );
 };
 
 #endif // MATH_H

@@ -15,29 +15,30 @@
 #include "IO/writeresults.h"
 #include "data.h"
 
-namespace Ui {
-class CalculationInfo;
+namespace Ui
+{
+    class CalculationInfo;
 }
 
 class CalculationInfo : public QWidget
 {
-    Q_OBJECT
-    
-public:
-    explicit CalculationInfo(Data::UserInput userInputData, QWidget *parent = 0);
-    ~CalculationInfo();
+        Q_OBJECT
 
-private slots:
-    void stopCalculations();
-    void pauseCalculations();
-    void updateGUI(long long coincidences);
-    
-signals:
-    void calculationFinished(Data::CalculationInfo info);
+    public:
+        explicit CalculationInfo ( Data::UserInput userInputData, QWidget *parent = 0 );
+        ~CalculationInfo();
 
-private:
-    Ui::CalculationInfo *ui;
-    CalculationsCore *core;
+    private slots:
+        void stopCalculations();
+        void pauseCalculations();
+        void updateGUI ( long long coincidences );
+
+    signals:
+        void calculationFinished ( Data::CalculationInfo info );
+
+    private:
+        Ui::CalculationInfo *ui;
+        CalculationsCore *core;
 };
 
 #endif // CALCULATIONINFO_H

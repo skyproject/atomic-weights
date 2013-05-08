@@ -12,19 +12,19 @@
 #include "Widgets\calculationresults.h"
 #include "ui_calculationresults.h"
 
-CalculationResults::CalculationResults(Data::CalculationInfo calculation,
-                                       QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::CalculationResults)
+CalculationResults::CalculationResults ( Data::CalculationInfo calculation,
+        QWidget *parent ) :
+    QWidget ( parent ),
+    ui ( new Ui::CalculationResults )
 {
-    ui->setupUi(this);
-    ui->labelFile->setText(calculation.resultsFilePath);
-    ui->labelCalculations->setText("Total calculations: " + QString::number(calculation.calculationsNumber));
-    ui->labelCoincidences->setText("Total coincidences: " + QString::number(calculation.coincidencesNumber));
-    connect(ui->buttonClose, SIGNAL(clicked()),
-            this, SLOT(closeResultsInfo()));
-    connect(ui->buttonOpenResults, SIGNAL(clicked()),
-            this, SLOT(openResultsFile()));
+    ui->setupUi ( this );
+    ui->labelFile->setText ( calculation.resultsFilePath );
+    ui->labelCalculations->setText ( "Total calculations: " + QString::number ( calculation.calculationsNumber ) );
+    ui->labelCoincidences->setText ( "Total coincidences: " + QString::number ( calculation.coincidencesNumber ) );
+    connect ( ui->buttonClose, SIGNAL ( clicked() ),
+              this, SLOT ( closeResultsInfo() ) );
+    connect ( ui->buttonOpenResults, SIGNAL ( clicked() ),
+              this, SLOT ( openResultsFile() ) );
 }
 
 CalculationResults::~CalculationResults()
@@ -34,7 +34,7 @@ CalculationResults::~CalculationResults()
 
 void CalculationResults::openResultsFile()
 {
-    QDesktopServices::openUrl(QUrl::fromLocalFile(ui->labelFile->text()));
+    QDesktopServices::openUrl ( QUrl::fromLocalFile ( ui->labelFile->text() ) );
 }
 
 void CalculationResults::closeResultsInfo()
