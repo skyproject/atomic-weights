@@ -9,6 +9,7 @@
 #ifndef DATA_H
 #define DATA_H
 
+#include <stdint.h>
 #include <QString>
 
 class Data
@@ -16,8 +17,8 @@ class Data
     public:
         enum class Logarithm
         {
-            natural,
-            decimal
+            Natural,
+            Decimal
         };
         struct UserInput
         {
@@ -27,17 +28,19 @@ class Data
             bool extendedIpSearch;
             Logarithm log;
             QString resultsFilePath;
+            uint64_t maximumCalculations;
+            uint64_t maximumCoincidences;
         };
         struct CalculationInfo
         {
             QString resultsFilePath;
-            long long calculationsNumber;
-            long long coincidencesNumber;
+            uint64_t calculationsNumber;
+            uint64_t coincidencesNumber;
         };
         struct CalculationResult
         {
-            long long calculations;
-            long long coincidences;
+            uint64_t calculations;
+            uint64_t coincidences;
             std::vector< std::vector<int> > ipVolume;
             std::vector< std::vector<double> > r_input;
         };

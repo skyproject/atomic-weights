@@ -23,7 +23,7 @@ void WriteResults::saveResult ( Data::CalculationResult result )
     output += "\n\n------------------------\n\n";
     output += ( "Coincidences:\t" + QString::number ( result.coincidences ) + "\n" );
     output += ( "Calculations:\t" + QString::number ( result.calculations ) + "\n" );
-    for ( int y = 0; y < 3; y++ )
+    for ( int y = 0; y < 3; ++y )
     {
         output += "\n";
         output += "Field " + QString::number ( y + 1 ) + "\n";
@@ -87,7 +87,7 @@ void WriteResults::writeInitialDataToFile ( Data::UserInput userInputData )
         stream << "\n";
         stream << "Ip comparison:\t" + QString::number ( userInputData.ipComparison ) + "\n";
         stream << "\n";
-        if ( userInputData.log == Data::Logarithm::natural )
+        if ( userInputData.log == Data::Logarithm::Natural )
         {
             stream << "Logarithmic base:\tNatural\n";
         }

@@ -52,7 +52,7 @@ MainWindow::~MainWindow()
 void MainWindow::updateCheckFinished()
 {
     this->show();
-    delete su;
+    delete this->su;
 }
 
 void MainWindow::showAbout()

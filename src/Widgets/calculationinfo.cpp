@@ -18,22 +18,11 @@ CalculationInfo::CalculationInfo ( Data::UserInput userInputData, QWidget *paren
               this, SLOT ( stopCalculations() ) );
     connect ( ui->buttonPause, SIGNAL ( clicked() ),
               this, SLOT ( pauseCalculations() ) );
-    short decimals = 0;
-    for ( int x = 0; x < 3; x++ )
-    {
-        if ( userInputData.search[x] != 0 )
-        {
-            QStringList value = ( QString::number ( userInputData.search[x] ) ).split ( "." );
-            if ( ( short ) value[1].length() > decimals )
-            {
-                decimals = ( short ) value[1].length();
-            }
-        }
-    }
-    decimals = ( decimals == 0 ) ? 10 : decimals;
-    core = new CalculationsCore ( userInputData, decimals );
-    connect ( core, SIGNAL ( ipFound ( long long ) ),
-              this, SLOT ( updateGUI ( long long ) ) );
+    core = new CalculationsCore ( userInputData );
+    connect ( this->core, SIGNAL ( ipFound ( uint64_t ) ),
+              this, SLOT ( updateGUI ( uint64_t ) ) );
+    connect ( this->core, SIGNAL ( finished() ),
+              this, SLOT ( stopCalculations() ) );
     core->start();
 }
 
@@ -60,7 +49,8 @@ void CalculationInfo::pauseCalculations()
 
 void CalculationInfo::stopCalculations()
 {
-    std::vector<long long> calculations = core->cancelCalculations();
+    std::vector<uint64_t> calculations = this->core->cancelCalculations();
+    this->core->deleteLater();
     Data::CalculationInfo info;
     info.calculationsNumber = calculations[0];
     info.coincidencesNumber = calculations[1];
@@ -68,7 +58,7 @@ void CalculationInfo::stopCalculations()
     emit calculationFinished ( info );
 }
 
-void CalculationInfo::updateGUI ( long long coincidences )
+void CalculationInfo::updateGUI ( uint64_t coincidences )
 {
     ui->labelCoincidences->setText ( "Total coincidences: " + QString::number ( coincidences ) );
 }

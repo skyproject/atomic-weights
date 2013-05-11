@@ -10,6 +10,12 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>640</width>
+    <height>480</height>
+   </size>
+  </property>
   <property name="palette">
    <palette>
     <active>
@@ -105,6 +111,7 @@
    <font>
     <family>Open Sans</family>
     <pointsize>11</pointsize>
+    <stylestrategy>PreferAntialias</stylestrategy>
    </font>
   </property>
   <property name="windowTitle">
@@ -169,6 +176,7 @@
     <font>
      <family>Open Sans</family>
      <pointsize>11</pointsize>
+     <stylestrategy>PreferAntialias</stylestrategy>
     </font>
    </property>
   </action>
@@ -191,6 +199,7 @@
     <font>
      <family>Open Sans</family>
      <pointsize>11</pointsize>
+     <stylestrategy>PreferAntialias</stylestrategy>
     </font>
    </property>
   </action>

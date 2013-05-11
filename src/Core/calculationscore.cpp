@@ -6,39 +6,63 @@
  * For full terms see LICENSE file.
  */
 
+#include <QStringList>
+
 #include "calculationscore.h"
 #include "math.h"
 
-CalculationsCore::CalculationsCore ( Data::UserInput userInputData, short decimals )
+CalculationsCore::CalculationsCore ( Data::UserInput userInputData )
 {
     this->maximumValue = userInputData.maximumValue;
     this->ipComparison = userInputData.ipComparison;
     this->ipSearch = userInputData.search;
     this->extendedIpSearch = userInputData.extendedIpSearch;
     this->logarithm = userInputData.log;
-    this->roundDecimals = decimals;
     this->wr = new WriteResults ( userInputData );
+
+    this->roundDecimals = 0;
+    for ( int x = 0; x < 3; ++x )
+    {
+        if ( userInputData.search[x] != 0 )
+        {
+            QStringList value = ( QString::number ( userInputData.search[x] ) ).split ( "." );
+            if ( ( short ) value[1].length() > this->roundDecimals )
+            {
+                this->roundDecimals = ( short ) value[1].length();
+            }
+        }
+    }
+    this->roundDecimals = ( this->roundDecimals == 0 ) ? 10 : this->roundDecimals;
+
+    this->maxCalculations = userInputData.maximumCalculations;
+    this->maxCoincidences = userInputData.maximumCoincidences;
+}
+
+CalculationsCore::~CalculationsCore()
+{
+    delete this->wr;
 }
 
 void CalculationsCore::pauseCalculations()
 {
-    sync.lock();
-    pause = true;
-    sync.unlock();
+    this->sync.lock();
+    this->pause = true;
+    this->sync.unlock();
 }
 
 void CalculationsCore::resumeCalculations()
 {
-    sync.lock();
-    pause = false;
-    sync.unlock();
-    pauseCond.wakeAll();
+    this->sync.lock();
+    this->pause = false;
+    this->sync.unlock();
+    this->pauseCond.wakeAll();
 }
 
-std::vector<long long> CalculationsCore::cancelCalculations()
+std::vector<uint64_t> CalculationsCore::cancelCalculations()
 {
-    cancel = true;
-    std::vector<long long> info;
+    this->cancel = true;
+    this->pauseCond.wakeAll();
+    std::vector<uint64_t> info;
     info.push_back ( this->calculations );
     info.push_back ( this->coincidences );
     return info;
@@ -48,16 +72,21 @@ void CalculationsCore::run()
 {
     while ( true )
     {
-        if ( cancel == true )
+        if ( this->maxCalculations != 0
+             && this->maxCalculations <= this->calculations )
         {
             break;
         }
-        sync.lock();
-        if ( pause == true )
+        if ( this->cancel == true )
         {
-            pauseCond.wait ( &sync );
+            break;
         }
-        sync.unlock();
+        this->sync.lock();
+        if ( this->pause == true )
+        {
+            pauseCond.wait ( &this->sync );
+        }
+        this->sync.unlock();
         this->calculations++;
         std::vector<int> input = getRandomIp();
         std::vector< std::vector<int> > volume = getIpVolume ( input );
@@ -73,6 +102,11 @@ void CalculationsCore::run()
             result.coincidences = this->coincidences;
             emit ipFound ( this->coincidences );
             this->wr->saveResult ( result );
+            if ( this->maxCoincidences != 0
+                 && this->maxCoincidences <= this->coincidences )
+            {
+                break;
+            }
         }
     }
 }
@@ -85,24 +119,14 @@ std::vector<int> CalculationsCore::getRandomIp()
         input.push_back ( 0 );
     }
     int inputSum = 0;
-    int loopTime = 0;
     do
     {
         inputSum = 0;
-        for ( int x = 0; x < 9; x++ )
+        for ( int x = 0; x < 9; ++x )
         {
             do
             {
-                input[x] = rnd->getRandomInt ( 0, ( 10 - inputSum ) );
-                if ( loopTime <= 4 )
-                {
-                    loopTime++;
-                }
-                else
-                {
-                    loopTime = 0;
-                    break;
-                }
+                input[x] = this->rnd.getRandomInt ( 0, ( 10 - inputSum ) );
             }
             while ( input[x] > this->maximumValue );
             inputSum += input[x];
@@ -124,21 +148,21 @@ std::vector< std::vector<int> > CalculationsCore::getIpVolume ( std::vector<int>
         }
         volume.push_back ( vol );
     }
-    for ( int x = 0; x < 9; x++ )
+    for ( int x = 0; x < 9; ++x )
     {
         while ( volume[0][x] + volume[1][x] + volume[2][x] != input[x] )
         {
             if ( input[x] > 0 )
             {
-                volume[0][x] = rnd->getRandomInt ( 0, input[x] );
+                volume[0][x] = rnd.getRandomInt ( 0, input[x] );
             }
             if ( ( input[x] - volume[0][x] ) > 0 )
             {
-                volume[1][x] = rnd->getRandomInt ( 0, ( input[x] - volume[0][x] ) );
+                volume[1][x] = rnd.getRandomInt ( 0, ( input[x] - volume[0][x] ) );
             }
             if ( ( input[x] - volume[1][x] ) > 0 )
             {
-                volume[2][x] = rnd->getRandomInt ( 1, ( input[x] - volume[1][x] ) );
+                volume[2][x] = rnd.getRandomInt ( 1, ( input[x] - volume[1][x] ) );
             }
         }
     }
@@ -159,7 +183,7 @@ std::vector< std::vector<double> >CalculationsCore::writeIp ( std::vector<int> i
         output.push_back ( out );
     }
     std::vector<int> cur_input;
-    for ( int x = 0; x < 9; x++ )
+    for ( int x = 0; x < 9; ++x )
     {
         cur_input.push_back ( double ( input[x] ) );
         output[0][ ( x + 1 )] = cur_input[x];
@@ -175,7 +199,7 @@ std::vector< std::vector<double> >CalculationsCore::writeIp ( std::vector<int> i
     cur_input[6] = ( volume[0][0] + volume[0][1] + volume[0][2] );
     cur_input[7] = ( volume[0][3] + volume[0][4] + volume[0][5] );
     cur_input[8] = ( volume[0][6] + volume[0][7] + volume[0][8] );
-    for ( int x = 0; x < 9; x++ )
+    for ( int x = 0; x < 9; ++x )
     {
         output[1][ ( x + 1 )] = cur_input[x];
     }
@@ -190,7 +214,7 @@ std::vector< std::vector<double> >CalculationsCore::writeIp ( std::vector<int> i
     cur_input[6] = ( volume[0][0] + volume[0][3] + volume[0][6] );
     cur_input[7] = ( volume[0][1] + volume[0][4] + volume[0][7] );
     cur_input[8] = ( volume[0][2] + volume[0][5] + volume[0][8] );
-    for ( int x = 0; x < 9; x++ )
+    for ( int x = 0; x < 9; ++x )
     {
         output[2][ ( x + 1 )] = cur_input[x];
     }
@@ -221,11 +245,11 @@ bool CalculationsCore::searchIp ( double inputIp[3] )
     }
     else if ( this->ipSearch[0] != 0 && this->ipSearch[1] != 0 && this->ipSearch[2] != 0 )
     {
-        bool found[3];
-        bool iabUsed[3];
-        for ( int x = 0; x < 3; x++ )
+        bool found[3] = { false, false, false };
+        bool iabUsed[3] = { false, false, false };
+        for ( int x = 0; x < 3; ++x )
         {
-            for ( int y = 0; y < 3; y++ )
+            for ( int y = 0; y < 3; ++y )
             {
                 if ( ip[x] == this->ipSearch[y] && iabUsed[y] == false )
                 {
@@ -248,9 +272,9 @@ bool CalculationsCore::searchIp ( double inputIp[3] )
     {
         bool found[2] = { false, false };
         bool iabUsed[2] = { false, false };
-        for ( int x = 0; x < 3; x++ )
+        for ( int x = 0; x < 3; ++x )
         {
-            for ( int y = 0; y < 2; y++ )
+            for ( int y = 0; y < 2; ++y )
             {
                 if ( ip[x] == this->ipSearch[y] && iabUsed[y] == false )
                 {

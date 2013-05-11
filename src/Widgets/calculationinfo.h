@@ -31,7 +31,7 @@ class CalculationInfo : public QWidget
     private slots:
         void stopCalculations();
         void pauseCalculations();
-        void updateGUI ( long long coincidences );
+        void updateGUI ( uint64_t coincidences );
 
     signals:
         void calculationFinished ( Data::CalculationInfo info );

@@ -31,8 +31,8 @@ CalculationWizard::CalculationWizard ( QWidget *parent ) :
 
 CalculationWizard::~CalculationWizard()
 {
-    delete wsp;
-    delete wisp;
+    delete this->wsp;
+    delete this->wisp;
     delete ui;
 }
 
@@ -55,9 +55,12 @@ void CalculationWizard::stepNext()
             input.resultsFilePath = fd->selectedFiles().at ( 0 );
             input.maximumValue = this->wsp->getMaximumValue();
             input.ipComparison = this->wsp->getIpComparison();
+            input.maximumCalculations = this->wsp->getMaximumCalculations();
+            input.maximumCoincidences = this->wsp->getMaximumCoincidences();
             input.extendedIpSearch = this->wisp->getExtendedIpSearch();
             input.log = this->wsp->getLogarithmicBase();
             input.search = this->wisp->getIpSearch();
+            fd->deleteLater();
             emit userInputCompleted ( input );
         }
     }

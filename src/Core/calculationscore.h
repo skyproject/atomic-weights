@@ -24,13 +24,14 @@ class CalculationsCore : public QThread
         Q_OBJECT
 
     public:
-        CalculationsCore ( Data::UserInput userInputData, short decimals );
-        std::vector<long long> cancelCalculations();
+        CalculationsCore ( Data::UserInput userInputData );
+        ~CalculationsCore();
+        std::vector<uint64_t> cancelCalculations();
         void pauseCalculations();
         void resumeCalculations();
 
     signals:
-        void ipFound ( long long coincidences );
+        void ipFound ( uint64_t coincidences );
 
     private:
         void run();
@@ -49,9 +50,11 @@ class CalculationsCore : public QThread
         QWaitCondition pauseCond;
         bool pause = false;
         bool cancel = false;
-        long long calculations = 0;
-        long long coincidences = 0;
-        MTRandom *rnd = new MTRandom();
+        uint64_t calculations = 0;
+        uint64_t coincidences = 0;
+        uint64_t maxCalculations = 0;
+        uint64_t maxCoincidences = 0;
+        MTRandom rnd;
         WriteResults *wr;
 };
 

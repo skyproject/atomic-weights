@@ -27,6 +27,7 @@ SOURCES += main.cpp\
         Core\calculationscore.cpp \
         Core\mtrandom.cpp \
         Core\math.cpp \
+        silentmode.cpp
 
 
 HEADERS  += Windows\mainwindow.h \
@@ -43,6 +44,7 @@ HEADERS  += Windows\mainwindow.h \
          Core\math.h \
          application.h \
          data.h \
+        silentmode.h
 
 
 FORMS    += Windows\mainwindow.ui \

@@ -14,6 +14,7 @@
    <font>
     <family>Open Sans</family>
     <pointsize>11</pointsize>
+    <stylestrategy>PreferAntialias</stylestrategy>
    </font>
   </property>
   <property name="windowTitle">

@@ -15,16 +15,16 @@ double Math::ip ( std::vector<int> input, Data::Logarithm log )
     double rowsTotalSum = 0;
     double rowsUncertaintyTotal = 0;
     double columnsUncertaintyTotal = 0;
-    for ( int x = 0; x < 3; x++ )
+    for ( int x = 0; x < 3; ++x )
     {
         columnSum[x] = input[x] + input[ ( x + 3 )] + input[ ( x + 6 )];
         rowSum[x] = input[ ( x * 3 )] + input[ ( x * 3 ) + 1] + input[ ( x * 3 ) + 2];
         rowsTotalSum += rowSum[x];
     }
     //fill rowSum with uncertainty values for each row
-    if ( log == Data::Logarithm::natural )
+    if ( log == Data::Logarithm::Natural )
     {
-        for ( int x = 0; x < 3; x++ )
+        for ( int x = 0; x < 3; ++x )
         {
             if ( rowSum[x] > 0 )
             {
@@ -40,7 +40,7 @@ double Math::ip ( std::vector<int> input, Data::Logarithm log )
     }
     else
     {
-        for ( int x = 0; x < 3; x++ )
+        for ( int x = 0; x < 3; ++x )
         {
             if ( rowSum[x] > 0 )
             {
@@ -55,9 +55,9 @@ double Math::ip ( std::vector<int> input, Data::Logarithm log )
         }
     }
     double kab = 0;
-    if ( log == Data::Logarithm::natural )
+    if ( log == Data::Logarithm::Natural )
     {
-        for ( int x = 0; x < 9; x++ )
+        for ( int x = 0; x < 9; ++x )
         {
             if ( input[x] > 0 )
             {
@@ -67,7 +67,7 @@ double Math::ip ( std::vector<int> input, Data::Logarithm log )
     }
     else
     {
-        for ( int x = 0; x < 9; x++ )
+        for ( int x = 0; x < 9; ++x )
         {
             if ( input[x] > 0 )
             {

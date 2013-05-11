@@ -86,6 +86,11 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="2">
     <widget class="QTextBrowser" name="textBrowser">
+     <property name="font">
+      <font>
+       <stylestrategy>PreferAntialias</stylestrategy>
+      </font>
+     </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
