@@ -26,12 +26,15 @@ class CalculationsCore : public QThread
     public:
         CalculationsCore ( Data::UserInput userInputData );
         ~CalculationsCore();
-        std::vector<uint64_t> cancelCalculations();
+        std::vector<uint64_t> getCalculationResult();
         void pauseCalculations();
         void resumeCalculations();
 
     signals:
         void ipFound ( uint64_t coincidences );
+
+    public slots:
+        void stopCalculations();
 
     private:
         void run();

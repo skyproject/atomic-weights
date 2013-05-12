@@ -23,12 +23,15 @@ CalculationsCore::CalculationsCore ( Data::UserInput userInputData )
     this->roundDecimals = 0;
     for ( int x = 0; x < 3; ++x )
     {
-        if ( userInputData.search[x] != 0 )
+        if ( userInputData.search[x] != IP_SEARCH_DISABLED )
         {
             QStringList value = ( QString::number ( userInputData.search[x] ) ).split ( "." );
-            if ( ( short ) value[1].length() > this->roundDecimals )
+            if ( value.size() > 1 )
             {
-                this->roundDecimals = ( short ) value[1].length();
+                if ( ( short ) value[1].length() > this->roundDecimals )
+                {
+                    this->roundDecimals = ( short ) value[1].length();
+                }
             }
         }
     }
@@ -58,10 +61,14 @@ void CalculationsCore::resumeCalculations()
     this->pauseCond.wakeAll();
 }
 
-std::vector<uint64_t> CalculationsCore::cancelCalculations()
+void CalculationsCore::stopCalculations()
 {
     this->cancel = true;
     this->pauseCond.wakeAll();
+}
+
+std::vector<uint64_t> CalculationsCore::getCalculationResult()
+{
     std::vector<uint64_t> info;
     info.push_back ( this->calculations );
     info.push_back ( this->coincidences );
@@ -109,6 +116,7 @@ void CalculationsCore::run()
             }
         }
     }
+    this->wr->writeEndingToFile();
 }
 
 std::vector<int> CalculationsCore::getRandomIp()
@@ -226,24 +234,26 @@ std::vector< std::vector<double> >CalculationsCore::writeIp ( std::vector<int> i
 bool CalculationsCore::searchIp ( double inputIp[3] )
 {
     double ip[3] = { inputIp[0], inputIp[1], inputIp[2] };
-    if ( this->ipSearch[0] == 0 )
+    if ( this->ipSearch[0] == IP_SEARCH_DISABLED )
     {
         if ( this->ipComparison == 3 )
         {
-            if ( ( ip[0] == ip[1] ) && ( ip[0] == ip[2] ) && ( ip[0] != 0 ) )
+            if ( ( ip[0] == ip[1] ) && ( ip[0] == ip[2] ) )
             {
                 return true;
             }
         }
         else
         {
-            if ( ( ( ip[0] == ip[1] ) && ( ip[0] != 0 ) ) || ( ( ip[0] == ip[2] ) && ( ip[0] != 0 ) ) || ( ( ip[1] == ip[2] ) && ( ip[1] != 0 ) ) )
+            if ( ( ip[0] == ip[1] ) || ( ip[0] == ip[2] ) || ( ip[1] == ip[2] ) )
             {
                 return true;
             }
         }
     }
-    else if ( this->ipSearch[0] != 0 && this->ipSearch[1] != 0 && this->ipSearch[2] != 0 )
+    else if ( this->ipSearch[0] != IP_SEARCH_DISABLED
+              && this->ipSearch[1] != IP_SEARCH_DISABLED
+              && this->ipSearch[2] != IP_SEARCH_DISABLED )
     {
         bool found[3] = { false, false, false };
         bool iabUsed[3] = { false, false, false };
@@ -268,7 +278,9 @@ bool CalculationsCore::searchIp ( double inputIp[3] )
             }
         }
     }
-    else if ( this->ipSearch[0] != 0 && this->ipSearch[1] != 0 && this->ipSearch[2] == 0 )
+    else if ( this->ipSearch[0] != IP_SEARCH_DISABLED
+              && this->ipSearch[1] != IP_SEARCH_DISABLED
+              && this->ipSearch[2] == IP_SEARCH_DISABLED )
     {
         bool found[2] = { false, false };
         bool iabUsed[2] = { false, false };
@@ -296,7 +308,9 @@ bool CalculationsCore::searchIp ( double inputIp[3] )
             }
         }
     }
-    else if ( this->ipSearch[0] != 0 && this->ipSearch[1] == 0 && this->ipSearch[2] == 0 )
+    else if ( this->ipSearch[0] != IP_SEARCH_DISABLED
+              && this->ipSearch[1] == IP_SEARCH_DISABLED
+              && this->ipSearch[2] == IP_SEARCH_DISABLED )
     {
         if ( this->extendedIpSearch == true )
         {

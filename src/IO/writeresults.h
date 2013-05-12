@@ -10,6 +10,7 @@
 #define WRITERESULTS_H
 
 #include <QObject>
+#include <map>
 
 #include "data.h"
 
@@ -20,12 +21,11 @@ class WriteResults : public QObject
     public:
         WriteResults ( Data::UserInput userInputData );
         void saveResult ( Data::CalculationResult result );
-
-    signals:
-        void resultSaved();
+        void writeEndingToFile();
 
     private:
         void writeInitialDataToFile ( Data::UserInput userInputData );
+        std::map<double, uint64_t> ipValues;
         QString resultsFile;
 };
 

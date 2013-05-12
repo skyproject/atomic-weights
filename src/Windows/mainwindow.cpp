@@ -14,9 +14,10 @@
 #include "Widgets/welcomeinfo.h"
 #include "Windows/aboutwindow.h"
 #include "Windows/mainwindow.h"
-#include "softwareupdate.h"
 #include "ui_mainwindow.h"
 #include "application.h"
+
+#include "softwareupdate.h"
 
 MainWindow::MainWindow ( QWidget *parent, bool checkUpdates ) :
     QMainWindow ( parent ),

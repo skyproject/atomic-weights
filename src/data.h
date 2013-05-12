@@ -9,6 +9,13 @@
 #ifndef DATA_H
 #define DATA_H
 
+/*
+ * Ip values in Atomic Weights calculations are ranged from 0 to 2.
+ * Therefore, a number that equals to 3 can be used to represent
+ * no Ip value search selected by user.
+*/
+#define IP_SEARCH_DISABLED          3
+
 #include <stdint.h>
 #include <QString>
 

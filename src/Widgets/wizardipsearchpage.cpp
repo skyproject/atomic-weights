@@ -10,6 +10,7 @@
 
 #include "Widgets/wizardipsearchpage.h"
 #include "ui_wizardipsearchpage.h"
+#include "data.h"
 
 WizardIpSearchPage::WizardIpSearchPage ( QWidget *parent ) :
     QWidget ( parent ),
@@ -126,9 +127,9 @@ void WizardIpSearchPage::ipCheckStateChanged ( int newState )
 std::vector<double> WizardIpSearchPage::getIpSearch()
 {
     std::vector<double> search;
-    search.push_back ( ( ui->checkIp1->checkState() == Qt::CheckState::Unchecked ) ? 0 : ui->lineIp1->text().toDouble() );
-    search.push_back ( ( ui->checkIp2->checkState() == Qt::CheckState::Unchecked ) ? 0 : ui->lineIp2->text().toDouble() );
-    search.push_back ( ( ui->checkIp3->checkState() == Qt::CheckState::Unchecked ) ? 0 : ui->lineIp3->text().toDouble() );
+    search.push_back ( ( ui->checkIp1->checkState() == Qt::CheckState::Unchecked ) ? IP_SEARCH_DISABLED : ui->lineIp1->text().toDouble() );
+    search.push_back ( ( ui->checkIp2->checkState() == Qt::CheckState::Unchecked ) ? IP_SEARCH_DISABLED : ui->lineIp2->text().toDouble() );
+    search.push_back ( ( ui->checkIp3->checkState() == Qt::CheckState::Unchecked ) ? IP_SEARCH_DISABLED : ui->lineIp3->text().toDouble() );
     return search;
 }
 

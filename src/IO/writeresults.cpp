@@ -11,6 +11,8 @@
 
 #include "IO\writeresults.h"
 
+#include "Core\math.h"
+
 WriteResults::WriteResults ( Data::UserInput userInputData )
 {
     this->resultsFile = userInputData.resultsFilePath;
@@ -72,7 +74,18 @@ void WriteResults::saveResult ( Data::CalculationResult result )
         QTextStream stream ( &results );
         stream << output;
     }
-    emit resultSaved();
+    for ( int x = 0; x < 3; ++x )
+    {
+        std::map<double, uint64_t>::iterator it = ipValues.find ( result.r_input[x][0] );
+        if ( it != ipValues.end() )
+        {
+            it->second += 1;
+        }
+        else
+        {
+            ipValues.insert ( std::pair<double, uint64_t> ( result.r_input[x][0], 1 ) );
+        }
+    }
 }
 
 void WriteResults::writeInitialDataToFile ( Data::UserInput userInputData )
@@ -85,7 +98,7 @@ void WriteResults::writeInitialDataToFile ( Data::UserInput userInputData )
         stream << "\n";
         stream << "Maximum generation value:\t" + QString::number ( userInputData.maximumValue ) + "\n";
         stream << "\n";
-        stream << "Ip comparison:\t" + QString::number ( userInputData.ipComparison ) + "\n";
+        stream << "Ip comparison:\t\t" + QString::number ( userInputData.ipComparison ) + "\n";
         stream << "\n";
         if ( userInputData.log == Data::Logarithm::Natural )
         {
@@ -96,12 +109,19 @@ void WriteResults::writeInitialDataToFile ( Data::UserInput userInputData )
             stream << "Logarithmic base:\tDecimal\n";
         }
         stream << "\n";
-        stream << "Ip search (1):\t" + QString::number ( userInputData.search[0] );
-        stream << "\n";
-        stream << "Ip search (2):\t" + QString::number ( userInputData.search[1] );
-        stream << "\n";
-        stream << "Ip search (3):\t" + QString::number ( userInputData.search[2] );
-        stream << "\n";
+
+        for ( int x = 0; x < 3; ++x )
+        {
+            if ( userInputData.search[x] == IP_SEARCH_DISABLED )
+            {
+                stream << "Ip search (" + QString::number ( ( x + 1 ) ) + "):\t\tDisabled";
+            }
+            else
+            {
+                stream << "Ip search (" + QString::number ( ( x + 1 ) ) + "):\t\t" + QString::number ( userInputData.search[x] );
+            }
+            stream << "\n";
+        }
         if ( userInputData.extendedIpSearch == true )
         {
             stream << "Reverse Ip search:\tEnabled" ;
@@ -109,6 +129,44 @@ void WriteResults::writeInitialDataToFile ( Data::UserInput userInputData )
         else
         {
             stream << "Reverse Ip search:\tDisabled" ;
+        }
+    }
+}
+
+void WriteResults::writeEndingToFile()
+{
+    QFile results ( this->resultsFile );
+    if ( results.open ( QIODevice::Append | QFile::Text ) )
+    {
+        QTextStream stream ( &results );
+        stream << "\n\n------------------------\n\n";
+        stream << "Nuclear affinity\n\n";
+        stream << "[#]\t[Ip]\t\t[Frequency]\t[Relative frequency]\n";
+
+        uint64_t totalFrequency = 0;
+        for ( std::map<double, uint64_t>::const_iterator it = this->ipValues.begin();
+              it != this->ipValues.end(); ++it )
+        {
+            totalFrequency += it->second;
+        }
+
+        uint64_t designation = 0;
+        for ( std::map<double, uint64_t>::const_iterator it = this->ipValues.begin();
+              it != this->ipValues.end(); ++it )
+        {
+            ++designation;
+            if ( QString::number ( it->first ).length() < 8 )
+            {
+                stream << QString::number ( designation ) + "\t" + QString::number ( it->first )
+                       + "\t\t" + QString::number ( it->second ) + "\t\t"
+                       + QString::number ( Math::roundDouble ( ( ( double ) it->second / totalFrequency ), 10 ) ) + "\n";
+            }
+            else
+            {
+                stream << QString::number ( designation ) + "\t" + QString::number ( it->first )
+                       + "\t" + QString::number ( it->second ) + "\t\t"
+                       + QString::number ( Math::roundDouble ( ( ( double ) it->second / totalFrequency ), 10 ) ) + "\n";
+            }
         }
     }
 }

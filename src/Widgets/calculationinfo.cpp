@@ -14,16 +14,16 @@ CalculationInfo::CalculationInfo ( Data::UserInput userInputData, QWidget *paren
 {
     ui->setupUi ( this );
     ui->labelFile->setText ( userInputData.resultsFilePath );
-    connect ( ui->buttonStop, SIGNAL ( clicked() ),
-              this, SLOT ( stopCalculations() ) );
     connect ( ui->buttonPause, SIGNAL ( clicked() ),
               this, SLOT ( pauseCalculations() ) );
     core = new CalculationsCore ( userInputData );
+    connect ( ui->buttonStop, SIGNAL ( clicked() ),
+              this->core, SLOT ( stopCalculations() ) );
     connect ( this->core, SIGNAL ( ipFound ( uint64_t ) ),
               this, SLOT ( updateGUI ( uint64_t ) ) );
     connect ( this->core, SIGNAL ( finished() ),
               this, SLOT ( stopCalculations() ) );
-    core->start();
+    this->core->start();
 }
 
 CalculationInfo::~CalculationInfo()
@@ -49,7 +49,7 @@ void CalculationInfo::pauseCalculations()
 
 void CalculationInfo::stopCalculations()
 {
-    std::vector<uint64_t> calculations = this->core->cancelCalculations();
+    std::vector<uint64_t> calculations = this->core->getCalculationResult();
     this->core->deleteLater();
     Data::CalculationInfo info;
     info.calculationsNumber = calculations[0];
