@@ -17,8 +17,6 @@
 #include "ui_mainwindow.h"
 #include "application.h"
 
-#include "softwareupdate.h"
-
 MainWindow::MainWindow ( QWidget *parent, bool checkUpdates ) :
     QMainWindow ( parent ),
     ui ( new Ui::MainWindow )

@@ -27,12 +27,7 @@ class WizardSettingsPage : public QWidget
         ~WizardSettingsPage();
         int getMaximumValue();
         int getIpComparison();
-        uint64_t getMaximumCalculations();
-        uint64_t getMaximumCoincidences();
         Data::Logarithm getLogarithmicBase();
-
-    private slots:
-        void checkRadioButtons();
 
     private:
         Ui::WizardSettingsPage *ui;

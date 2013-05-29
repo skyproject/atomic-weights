@@ -12,8 +12,9 @@
 #include <QObject>
 
 #include "Core/calculationscore.h"
-#include "softwareupdate.h"
 #include "data.h"
+
+#include "sul_softwareupdate.h"
 
 class SilentMode : public QObject
 {

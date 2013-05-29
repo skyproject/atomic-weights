@@ -176,7 +176,7 @@ p, li { white-space: pre-wrap; }
     </spacer>
    </item>
    <item row="4" column="1">
-    <widget class="QPushButton" name="buttonClose">
+    <widget class="SButton" name="buttonClose">
      <property name="minimumSize">
       <size>
        <width>80</width>
@@ -195,6 +195,13 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SButton</class>
+   <extends>QPushButton</extends>
+   <header>suil_button.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

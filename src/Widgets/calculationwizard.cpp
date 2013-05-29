@@ -10,6 +10,7 @@
 
 #include "Widgets/wizardsettingspage.h"
 #include "Widgets/wizardipsearchpage.h"
+#include "Widgets/wizardautostoppage.h"
 #include "Widgets/calculationwizard.h"
 #include "ui_calculationwizard.h"
 
@@ -18,77 +19,37 @@ CalculationWizard::CalculationWizard ( QWidget *parent ) :
     ui ( new Ui::CalculationWizard )
 {
     ui->setupUi ( this );
-    wsp = new WizardSettingsPage();
-    ui->pageLayout->addWidget ( wsp );
-    wisp = new WizardIpSearchPage();
-    ui->pageLayout->addWidget ( wisp );
-    connect ( ui->buttonNext, SIGNAL ( clicked() ),
-              this, SLOT ( stepNext() ) );
-    connect ( ui->buttonBack, SIGNAL ( clicked() ),
-              this, SLOT ( stepBack() ) );
-    switchPage();
+    connect ( ui->wizard, SIGNAL ( wizardFinished() ),
+              this, SLOT ( wizardFinished() ) );
+    ui->wizard->wizardPages.push_back ( new WizardSettingsPage() );
+    ui->wizard->wizardPages.push_back ( new WizardIpSearchPage() );
+    ui->wizard->wizardPages.push_back ( new WizardAutoStopPage() );
+    ui->wizard->loadPages();
 }
 
 CalculationWizard::~CalculationWizard()
 {
-    delete this->wsp;
-    delete this->wisp;
     delete ui;
 }
 
-void CalculationWizard::stepNext()
+void CalculationWizard::wizardFinished()
 {
-    if ( currentPage < 1 )
+    QFileDialog *fd = new QFileDialog ( this, tr ( "Select file for saving calculation results" ) );
+    fd->setDefaultSuffix ( ".txt" );
+    fd->setNameFilter ( "Text Documents (*.txt)" );
+    fd->setAcceptMode ( QFileDialog::AcceptSave );
+    if ( fd->exec() == true )
     {
-        currentPage++;
-        switchPage();
-    }
-    else
-    {
-        QFileDialog *fd = new QFileDialog ( this, tr ( "Select file for saving calculation results" ) );
-        fd->setDefaultSuffix ( ".txt" );
-        fd->setNameFilter ( "Text Documents (*.txt)" );
-        fd->setAcceptMode ( QFileDialog::AcceptSave );
-        if ( fd->exec() == true )
-        {
-            Data::UserInput input;
-            input.resultsFilePath = fd->selectedFiles().at ( 0 );
-            input.maximumValue = this->wsp->getMaximumValue();
-            input.ipComparison = this->wsp->getIpComparison();
-            input.maximumCalculations = this->wsp->getMaximumCalculations();
-            input.maximumCoincidences = this->wsp->getMaximumCoincidences();
-            input.extendedIpSearch = this->wisp->getExtendedIpSearch();
-            input.log = this->wsp->getLogarithmicBase();
-            input.search = this->wisp->getIpSearch();
-            fd->deleteLater();
-            emit userInputCompleted ( input );
-        }
-    }
-}
-
-void CalculationWizard::stepBack()
-{
-    currentPage--;
-    switchPage();
-}
-
-void CalculationWizard::switchPage()
-{
-    switch ( currentPage )
-    {
-        case 0:
-        {
-            wsp->setVisible ( true );
-            wisp->setVisible ( false );
-            ui->buttonBack->setVisible ( false );
-            break;
-        }
-        case 1:
-        {
-            wsp->setVisible ( false );
-            wisp->setVisible ( true );
-            ui->buttonBack->setVisible ( true );
-            break;
-        }
+        Data::UserInput input;
+        input.resultsFilePath = fd->selectedFiles().at ( 0 );
+        input.maximumValue = qobject_cast<WizardSettingsPage *> ( ui->wizard->wizardPages[0] )->getMaximumValue();
+        input.ipComparison = qobject_cast<WizardSettingsPage *> ( ui->wizard->wizardPages[0] )->getIpComparison();
+        input.log = qobject_cast<WizardSettingsPage *> ( ui->wizard->wizardPages[0] )->getLogarithmicBase();
+        input.maximumCalculations = qobject_cast<WizardAutoStopPage *> ( ui->wizard->wizardPages[2] )->getMaximumCalculations();
+        input.maximumCoincidences = qobject_cast<WizardAutoStopPage *> ( ui->wizard->wizardPages[2] )->getMaximumCoincidences();
+        input.extendedIpSearch = qobject_cast<WizardIpSearchPage *> ( ui->wizard->wizardPages[1] )->getExtendedIpSearch();
+        input.search = qobject_cast<WizardIpSearchPage *> ( ui->wizard->wizardPages[1] )->getIpSearch();
+        fd->deleteLater();
+        emit userInputCompleted ( input );
     }
 }

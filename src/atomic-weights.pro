@@ -27,7 +27,8 @@ SOURCES += main.cpp\
         Core\calculationscore.cpp \
         Core\mtrandom.cpp \
         Core\math.cpp \
-        silentmode.cpp
+        silentmode.cpp \
+    Widgets/wizardautostoppage.cpp
 
 
 HEADERS  += Windows\mainwindow.h \
@@ -43,8 +44,9 @@ HEADERS  += Windows\mainwindow.h \
          Core\mtrandom.h \
          Core\math.h \
          application.h \
+         silentmode.h \
          data.h \
-        silentmode.h
+    Widgets/wizardautostoppage.h
 
 
 FORMS    += Windows\mainwindow.ui \
@@ -54,7 +56,8 @@ FORMS    += Windows\mainwindow.ui \
          Widgets\wizardipsearchpage.ui \
          Widgets\calculationresults.ui \
          Widgets\calculationinfo.ui \
-         Widgets\welcomeinfo.ui
+         Widgets\welcomeinfo.ui \
+    Widgets/wizardautostoppage.ui
 
 
 RESOURCES += \
@@ -65,10 +68,14 @@ win32:RC_FILE = resources.rc
 
 
 # ------ d:/l/sul is a path to folder with software-update library
+# ------ d:/l/suil is a path to folder with skyproject-ui library
 
 LIBS += -Ld:/l/sul -lsoftware-update
+LIBS += -Ld:/l/suil -lskyproject-ui
+
 
 # ------ d:/l/sul/includes/ is a path to folder with software-update library header files
+# ------ d:/l/suil/includes/ is a path to folder with skyproject-ui library header files
 
 INCLUDEPATH += d:/l/sul/includes/
-
+INCLUDEPATH += d:/l/suil/includes/

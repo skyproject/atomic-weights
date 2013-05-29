@@ -11,8 +11,9 @@
 
 #include <QMainWindow>
 
-#include "softwareupdate.h"
 #include "data.h"
+
+#include "sul_softwareupdate.h"
 
 namespace Ui
 {

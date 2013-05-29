@@ -11,8 +11,6 @@
 
 #include <QWidget>
 
-#include "Widgets/wizardsettingspage.h"
-#include "Widgets/wizardipsearchpage.h"
 #include "data.h"
 
 namespace Ui
@@ -29,18 +27,13 @@ class CalculationWizard : public QWidget
         ~CalculationWizard();
 
     private slots:
-        void stepNext();
-        void stepBack();
+        void wizardFinished();
 
     signals:
         void userInputCompleted ( Data::UserInput userInputData );
 
     private:
         Ui::CalculationWizard *ui;
-        WizardSettingsPage *wsp;
-        WizardIpSearchPage *wisp;
-        void switchPage();
-        short currentPage = 0;
 };
 
 #endif // CALCULATIONWIZARD_H

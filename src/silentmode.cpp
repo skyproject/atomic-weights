@@ -9,7 +9,6 @@
 #include <QApplication>
 #include <QStringList>
 
-#include "softwareupdate.h"
 #include "application.h"
 #include "silentmode.h"
 
